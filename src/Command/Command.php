@@ -1,10 +1,10 @@
 <?php
 
-namespace Singular\Console\Console;
+namespace Singular\Console\Command;
 
-use Knp\Console\Application as BaseApplication;
+use Knp\Command\Command as BaseCommand;
 
-class Application extends BaseApplication
+class Command extends BaseCommand
 {
 
 }
