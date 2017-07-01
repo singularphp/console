@@ -14,33 +14,12 @@ class Application extends BaseApplication
 
         $command = $this->getCommandName($input);
 
-        $pack = $this->getPackNamespace($command);
+        $packs = $app['singular.packs']->keys();
 
-        if ($pack) {
-            if (isset($app['singular.packs'][$pack])) {
-                $app['console.command_locator']->locate($pack);
-            }
+        foreach ($packs as $pack) {
+            $app['console.command_locator']->locate($pack);
         }
         
         return parent::doRun($input, $output);
-    }
-
-    /**
-     * Recupera o namespace do pacote do comando.
-     *
-     * @param $command
-     * @return null
-     */
-    protected function getPackNamespace($command)
-    {
-        $namespace = null;
-
-        $parts = explode(':', $command);
-
-        if (count($parts) > 1) {
-            $namespace = $parts[0];
-        }
-
-        return $namespace;
     }
 }
