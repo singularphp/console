@@ -24,19 +24,21 @@ class CommandLocator
     {
         $finder = new Finder();
         $packDirectory = $this->packs[$pack]->getDirectory();
+        $commandDir = $packDirectory.DIRECTORY_SEPARATOR."Command";
 
-        foreach ($finder->name("*.php")->in($packDirectory.DIRECTORY_SEPARATOR."Command") as $file) {
-            $commandClass = str_replace('.php','' , $file->getFilename());
-            $fullClassName = "\\".$this->packs[$pack]->getNameSpace()."\\Command\\".$commandClass;
+        if (is_dir($commandDir)) {
+            foreach ($finder->name("*.php")->in($packDirectory.DIRECTORY_SEPARATOR."Command") as $file) {
+                $commandClass = str_replace('.php','' , $file->getFilename());
+                $fullClassName = "\\".$this->packs[$pack]->getNameSpace()."\\Command\\".$commandClass;
 
-            if (class_exists($fullClassName)) {
-                $command = new $fullClassName;
+                if (class_exists($fullClassName)) {
+                    $command = new $fullClassName;
 
-                if ($command instanceof \Singular\Console\Command\Command) {
-                    $this->console->add($command);
+                    if ($command instanceof \Singular\Console\Command\Command) {
+                        $this->console->add($command);
+                    }
                 }
             }
         }
-
     }
 }
